@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1120">
+    <meta name="description" content="Analyze website security headers, privacy configuration, and HTTP response performance with SafeBrowse.">
+
+    <title>SafeBrowse - Web Security &amp; Privacy Analyzer</title>
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <h1>🛡️ SafeBrowse</h1>
+        <p>Web Security &amp; Privacy Analyzer</p>
+    </header>
+
+    <main class="container">
+
+        <!-- Website Scanner -->
+        <section class="scanner-card" aria-labelledby="scannerHeading">
+            <h2 id="scannerHeading">Analyze a Website</h2>
+
+            <p class="description">
+                Check a website's security configuration and discover
+                opportunities to improve its protection.
+            </p>
+
+            <form id="scanForm">
+                <label for="urlInput">Website URL</label>
+
+                <input
+                    type="url"
+                    id="urlInput"
+                    placeholder="https://example.com"
+                    autocomplete="url"
+                    required
+                >
+
+                <button type="submit" id="scanButton">
+                    Scan Website
+                </button>
+            </form>
+
+            <p
+                id="errorMessage"
+                role="status"
+                aria-live="polite"
+            ></p>
+        </section>
+
+        <!-- Scan Results -->
+        <section
+            class="results-section"
+            aria-labelledby="resultsHeading"
+        >
+            <h2 id="resultsHeading">Scan Results</h2>
+
+            <div class="score-container">
+
+                <!-- Security Score -->
+                <article class="score-card security-score-card">
+                    <h3>Security</h3>
+
+                    <p>
+                        <strong id="securityScore">--</strong>
+                        <span>/ 100</span>
+                    </p>
+
+                    <div
+                        class="score-progress-track"
+                        id="securityProgressTrack"
+                        role="progressbar"
+                        aria-label="Security score"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow="0"
+                        aria-valuetext="No scan performed"
+                    >
+                        <div
+                            class="score-progress-fill"
+                            id="securityProgressFill"
+                        ></div>
+                    </div>
+
+                    <p id="securityGrade" class="score-grade">
+                        Awaiting scan
+                    </p>
+                </article>
+
+                <!-- Privacy Score -->
+                <article class="score-card privacy-score-card">
+                    <h3>Privacy</h3>
+
+                    <p>
+                        <strong id="privacyScore">--</strong>
+                        <span>/ 100</span>
+                    </p>
+
+                    <p id="privacyGrade" class="score-grade">
+                        Awaiting scan
+                    </p>
+                </article>
+
+                <!-- Performance Score -->
+                <article class="score-card performance-score-card">
+                    <h3>Performance</h3>
+
+                    <p>
+                        <strong id="performanceScore">--</strong>
+                        <span>/ 100</span>
+                    </p>
+
+                    <p id="performanceGrade" class="score-grade">
+                        Awaiting scan
+                    </p>
+
+                    <p id="responseTime" class="score-grade">
+                        Response time: --
+                    </p>
+                </article>
+
+            </div>
+
+            <!-- Security Checks -->
+            <section
+                class="checks-card"
+                aria-labelledby="checksHeading"
+            >
+                <h3 id="checksHeading">Security Checks</h3>
+
+                <ul id="securityChecks" aria-live="polite">
+                    <li>Run a scan to see security checks.</li>
+                </ul>
+            </section>
+
+            <!-- Recommendations -->
+            <section
+                class="recommendations-card"
+                aria-labelledby="recommendationsHeading"
+            >
+                <h3 id="recommendationsHeading">Recommendations</h3>
+
+                <ul id="recommendations" aria-live="polite">
+                    <li>No scan performed yet.</li>
+                </ul>
+            </section>
+
+        </section>
+
+        <!-- Recent Scan History -->
+        <section
+            class="history-section"
+            aria-labelledby="historyHeading"
+        >
+            <div class="history-header">
+                <div>
+                    <h2 id="historyHeading">Recent Scans</h2>
+                    <p class="description">
+                        Review websites scanned during previous visits.
+                    </p>
+                </div>
+
+                <div class="history-actions">
+    <button type="button" id="exportHistoryButton" class="export-history-button">
+        Export History
+    </button>
+
+    <button type="button" id="clearHistoryButton" class="clear-history-button">
+        Clear History
+    </button>
+</div>
+            </div>
+
+            <p id="historyMessage" role="status" aria-live="polite">
+                Your recent website scans will appear here.
+            </p>
+
+            <div class="history-table-wrapper">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Website</th>
+                            <th scope="col">Security</th>
+                            <th scope="col">Privacy</th>
+                            <th scope="col">Performance</th>
+                            <th scope="col">Scan Time</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="scanHistory">
+                        <tr>
+                            <td colspan="5">No scans yet.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>SafeBrowse © 2026</p>
+        <p>
+            Basic security and privacy assessment —
+            not a complete security audit.
+        </p>
+    </footer>
+
+    <script src="./script.js"></script>
+
+</body>
+</html>

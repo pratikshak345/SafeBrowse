@@ -1,0 +1,386 @@
+button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+#errorMessage {
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.checks-card li,
+.recommendations-card li {
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.score-card p {
+    color: #2563eb;
+}
+
+.checks-card li:last-child,
+.recommendations-card li:last-child {
+    border-bottom: none;
+}
+
+input:focus {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+button:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+
+/* ===== SafeBrowse Dashboard Improvements ===== */
+
+:root {
+    --sb-bg: #0b1120;
+    --sb-card: #151f32;
+    --sb-card-border: #29364d;
+    --sb-text: #e5edf8;
+    --sb-muted: #9aabc3;
+    --sb-blue: #60a5fa;
+    --sb-green: #34d399;
+    --sb-red: #f87171;
+    --sb-radius: 16px;
+}
+
+/* Dashboard cards */
+.score-card,
+.checks-card,
+.recommendations-card {
+    background: var(--sb-card);
+    color: var(--sb-text);
+    border: 1px solid var(--sb-card-border);
+    border-radius: var(--sb-radius);
+    padding: 22px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Card headings */
+.score-card h2,
+.checks-card h2,
+.recommendations-card h2 {
+    color: var(--sb-text);
+    margin-top: 0;
+}
+
+/* Score values */
+.score-card p {
+    color: var(--sb-blue);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+/* Results lists */
+.checks-card ul,
+.recommendations-card ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+.checks-card li,
+.recommendations-card li {
+    color: var(--sb-text);
+    padding: 12px 0;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+    border-bottom: 1px solid var(--sb-card-border);
+}
+
+/* Scan form */
+input {
+    box-sizing: border-box;
+    max-width: 100%;
+    border: 1px solid var(--sb-card-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    background: #0f172a;
+    color: var(--sb-text);
+}
+
+input::placeholder {
+    color: var(--sb-muted);
+}
+
+input:focus {
+    outline: 2px solid var(--sb-blue);
+    outline-offset: 2px;
+}
+
+/* Scan button */
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+button:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+/* Error and status messages */
+#errorMessage {
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    color: var(--sb-muted);
+}
+
+/* Responsive layout */
+@media (max-width: 640px) {
+    .score-card,
+    .checks-card,
+    .recommendations-card {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .score-card p {
+        font-size: 1.7rem;
+    }
+
+    button {
+        width: 100%;
+    }
+}
+/* Security score progress bar */
+.score-progress-track {
+    width: 100%;
+    height: 9px;
+    margin-top: 16px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #29364d;
+}
+
+.score-progress-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: #60a5fa;
+    transition: width 0.5s ease;
+}
+
+.score-grade {
+    margin-top: 10px;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    color: #9aabc3 !important;
+}
+
+#securityProgressTrack:focus-visible {
+    outline: 2px solid #60a5fa;
+    outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .score-progress-fill {
+        transition: none;
+    }
+}
+
+/* Security check status badges */
+.security-check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.status-badge {
+    display: inline-block;
+    flex-shrink: 0;
+    min-width: 66px;
+    padding: 5px 9px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+.status-pass {
+    color: #6ee7b7;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(52, 211, 153, 0.35);
+}
+
+.status-review {
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.13);
+    border: 1px solid rgba(248, 113, 113, 0.35);
+}
+
+.check-details {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+    .security-check-item {
+        gap: 8px;
+    }
+
+    .status-badge {
+        min-width: 54px;
+        padding: 5px 6px;
+    }
+}
+
+
+/* Recent Scan History */
+.history-section {
+    margin-top: 28px;
+    padding: 24px;
+    background: var(--sb-card, #111b2e);
+    border: 1px solid var(--sb-card-border, #29364d);
+    border-radius: var(--sb-radius, 16px);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.history-header h2 {
+    margin: 0 0 8px;
+}
+
+.history-header .description {
+    margin: 0;
+}
+
+.clear-history-button {
+    width: auto;
+    padding: 10px 14px;
+    background: transparent;
+    color: #fca5a5;
+    border: 1px solid rgba(248, 113, 113, 0.5);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.clear-history-button:hover {
+    background: rgba(239, 68, 68, 0.12);
+}
+
+.history-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.history-table th,
+.history-table td {
+    padding: 13px 12px;
+    border-bottom: 1px solid var(--sb-card-border, #29364d);
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.history-table th {
+    color: var(--sb-muted, #9aabc3);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.history-table td {
+    color: var(--sb-text, #e5edf8);
+    font-size: 0.9rem;
+}
+
+.history-table a {
+    color: #93c5fd;
+    text-decoration: none;
+}
+
+.history-table a:hover {
+    text-decoration: underline;
+}
+
+#historyMessage {
+    color: var(--sb-muted, #9aabc3);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+    .history-section {
+        padding: 16px;
+    }
+
+    .history-header {
+        align-items: flex-start;
+    }
+}
+
+
+/* Export Scan History Button */
+.history-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.export-history-button {
+    width: auto;
+    padding: 10px 14px;
+    background: #2563eb;
+    color: #ffffff;
+    border: 1px solid #3b82f6;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.export-history-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.export-history-button:focus-visible,
+.clear-history-button:focus-visible {
+    outline: 2px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+    .history-actions {
+        width: 100%;
+    }
+
+    .history-actions button {
+        flex: 1;
+    }
+}

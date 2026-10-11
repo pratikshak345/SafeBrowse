@@ -1,0 +1,243 @@
+import ipaddress
+import socket
+from urllib.parse import urljoin, urlsplit
+
+import httpx
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
+
+
+app = FastAPI(title="SafeBrowse API")
+
+# Local development only. Restrict this to your frontend origin in production.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+class ScanRequest(BaseModel):
+    url: str = Field(min_length=1, max_length=2048)
+
+
+def validate_public_url(url: str) -> str:
+    """Allow only HTTP(S) URLs that resolve to public IP addresses."""
+    try:
+        parsed = urlsplit(url)
+
+        if parsed.scheme not in ("http", "https"):
+            raise ValueError("Only HTTP and HTTPS URLs are supported.")
+
+        if not parsed.hostname:
+            raise ValueError("The URL must contain a hostname.")
+
+        if parsed.username or parsed.password:
+            raise ValueError("URLs containing login credentials are not allowed.")
+
+        port = parsed.port
+        if port is not None and port not in (80, 443):
+            raise ValueError("Only ports 80 and 443 are allowed.")
+
+        host = parsed.hostname
+
+        # Resolve the hostname and reject local/private destinations.
+        addresses = socket.getaddrinfo(
+            host,
+            port or (443 if parsed.scheme == "https" else 80),
+            type=socket.SOCK_STREAM,
+        )
+
+        if not addresses:
+            raise ValueError("The hostname did not resolve.")
+
+        for address in addresses:
+            ip = ipaddress.ip_address(address[4][0])
+            if not ip.is_global:
+                raise ValueError("Private or non-public network destinations are blocked.")
+
+        return url
+
+    except HTTPException:
+        raise
+    except (ValueError, OSError, socket.gaierror) as exc:
+        raise ValueError(f"Invalid or unreachable URL: {exc}") from exc
+
+
+def get_website_response(url: str):
+    """Fetch a website while validating each redirect destination."""
+    current_url = url
+
+    with httpx.Client(
+        timeout=8.0,
+        follow_redirects=False,
+        trust_env=False,
+        headers={"User-Agent": "SafeBrowse-Security-Analyzer/1.0"},
+    ) as client:
+
+        for _ in range(6):
+            validate_public_url(current_url)
+
+            try:
+                response = client.get(current_url)
+            except httpx.TimeoutException as exc:
+                raise HTTPException(
+                    status_code=504,
+                    detail="The website took too long to respond.",
+                ) from exc
+            except httpx.RequestError as exc:
+                raise HTTPException(
+                    status_code=502,
+                    detail="Could not retrieve the website response.",
+                ) from exc
+
+            if response.status_code not in (301, 302, 303, 307, 308):
+                return response, current_url
+
+            location = response.headers.get("location")
+
+            if not location:
+                return response, current_url
+
+            current_url = urljoin(current_url, location)
+
+        raise HTTPException(
+            status_code=502,
+            detail="Too many redirects. Scan stopped.",
+        )
+
+
+@app.get("/")
+def home():
+    return {"message": "SafeBrowse backend is running"}
+
+
+@app.post("/scan")
+def scan_website(request: ScanRequest):
+    try:
+        url = validate_public_url(request.url)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    response, final_url = get_website_response(url)
+    headers = response.headers
+
+    # Each check has a weight. The final score is normalized to 100.
+    checks = [
+        {
+            "name": "HTTPS",
+            "passed": urlsplit(final_url).scheme == "https",
+            "weight": 20,
+            "details": (
+                "The final URL uses HTTPS."
+                if urlsplit(final_url).scheme == "https"
+                else "The final URL uses HTTP, not HTTPS."
+            ),
+        },
+        {
+            "name": "HSTS",
+            "passed": "strict-transport-security" in headers,
+            "weight": 15,
+            "details": (
+                "The Strict-Transport-Security header was found."
+                if "strict-transport-security" in headers
+                else "The Strict-Transport-Security header was not found."
+            ),
+        },
+        {
+            "name": "Content Security Policy",
+            "passed": "content-security-policy" in headers,
+            "weight": 20,
+            "details": (
+                "A Content-Security-Policy header was found."
+                if "content-security-policy" in headers
+                else "The Content-Security-Policy header was not found."
+            ),
+        },
+        {
+            "name": "X-Frame-Options",
+            "passed": "x-frame-options" in headers
+            or "frame-ancestors" in headers.get("content-security-policy", ""),
+            "weight": 10,
+            "details": (
+                "A frame restriction was found."
+                if (
+                    "x-frame-options" in headers
+                    or "frame-ancestors" in headers.get("content-security-policy", "")
+                )
+                else "No common frame restriction was found."
+            ),
+        },
+        {
+            "name": "X-Content-Type-Options",
+            "passed": "nosniff" in headers.get("x-content-type-options", "").lower(),
+            "weight": 10,
+            "details": (
+                "The nosniff setting was found."
+                if "nosniff" in headers.get("x-content-type-options", "").lower()
+                else "The nosniff setting was not found."
+            ),
+        },
+        {
+            "name": "Referrer Policy",
+            "passed": "referrer-policy" in headers,
+            "weight": 10,
+            "details": (
+                "A Referrer-Policy header was found."
+                if "referrer-policy" in headers
+                else "The Referrer-Policy header was not found."
+            ),
+        },
+        {
+            "name": "Permissions Policy",
+            "passed": "permissions-policy" in headers,
+            "weight": 5,
+            "details": (
+                "A Permissions-Policy header was found."
+                if "permissions-policy" in headers
+                else "The Permissions-Policy header was not found."
+            ),
+        },
+    ]
+
+    total_weight = sum(check["weight"] for check in checks)
+    earned_weight = sum(
+        check["weight"] for check in checks if check["passed"]
+    )
+    score = round(earned_weight / total_weight * 100)
+
+    if score >= 80:
+        rating = "Good"
+    elif score >= 60:
+        rating = "Moderate"
+    else:
+        rating = "Needs attention"
+
+    recommendations = [
+        f"Review the {check['name']} configuration: {check['details']}"
+        for check in checks
+        if not check["passed"]
+    ]
+
+    if not recommendations:
+        recommendations.append(
+            "All implemented header-presence checks passed. "
+            "This does not guarantee the website is secure."
+        )
+
+    return {
+        "url": request.url,
+        "final_url": final_url,
+        "http_status": response.status_code,
+        "security_score": score,
+        "rating": rating,
+        "checks": checks,
+        "recommendations": recommendations,
+        "notice": (
+            "This is a basic response-header assessment, not a full security audit. "
+            "Header presence alone does not prove that a policy is configured correctly."
+        ),
+    }
