@@ -4,69 +4,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0b1120">
-    <meta name="description" content="Analyze website security headers, privacy configuration, and HTTP response performance with SafeBrowse.">
+    <meta name="theme-color" content="#080d19">
+    <meta name="description" content="Scan website security headers, privacy settings, cookies, and HTTP response performance with SafeBrowse.">
 
-    <title>SafeBrowse - Web Security &amp; Privacy Analyzer</title>
+    <title>SafeBrowse — Website Security Scanner</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
 
     <header class="header">
-        <h1>🛡️ SafeBrowse</h1>
-        <p>Web Security &amp; Privacy Analyzer</p>
+        <a class="brand" href="#" aria-label="SafeBrowse home">
+            <span class="brand-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 3 20 6v5c0 5-3.4 8.2-8 10-4.6-1.8-8-5-8-10V6l8-3Z"
+                        stroke="currentColor" stroke-width="1.8"
+                        stroke-linejoin="round"/>
+                    <path d="m8.5 12 2.3 2.3 4.8-5"
+                        stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span>Safe<span class="brand-highlight">Browse</span></span>
+        </a>
+
+        <div class="header-status">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span>Website Security Scanner</span>
+        </div>
     </header>
 
     <main class="container">
 
-        <!-- Website Scanner -->
-        <section class="scanner-card" aria-labelledby="scannerHeading">
-            <h2 id="scannerHeading">Analyze a Website</h2>
+        <!-- Hero and URL scanner -->
+        <section class="hero" aria-labelledby="scannerHeading">
+            <div class="hero-badge">
+                <span class="badge-sparkle" aria-hidden="true">✦</span>
+                YOUR WEBSITE. A CLEARER PICTURE.
+            </div>
 
-            <p class="description">
-                Check a website's security configuration and discover
-                opportunities to improve its protection.
+            <h1>
+                Browse smarter.<br>
+                <span class="gradient-text">Stay one step ahead.</span>
+            </h1>
+
+            <p class="hero-description">
+                Discover website security gaps, review privacy settings,
+                and measure server response time — all in one place.
             </p>
 
-            <form id="scanForm">
-                <label for="urlInput">Website URL</label>
+            <div class="scanner-card">
+                <div class="scanner-card-heading">
+                    <span class="scanner-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="10.8" cy="10.8" r="6.8"
+                                stroke="currentColor" stroke-width="1.8"/>
+                            <path d="m16 16 4.2 4.2M8 10.8h5.6M10.8 8v5.6"
+                                stroke="currentColor" stroke-width="1.8"
+                                stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <div>
+                        <h2 id="scannerHeading">Analyze a website</h2>
+                        <p>Enter a URL to get your website assessment.</p>
+                    </div>
+                </div>
 
-                <input
-                    type="url"
-                    id="urlInput"
-                    placeholder="https://example.com"
-                    autocomplete="url"
-                    required
-                >
+                <form id="scanForm">
+                    <label for="urlInput">Website URL</label>
 
-                <button type="submit" id="scanButton">
-                    Scan Website
-                </button>
-            </form>
+                    <div class="url-input-group">
+                        <span class="url-prefix" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <rect x="5" y="10" width="14" height="11"
+                                    rx="2" stroke="currentColor"
+                                    stroke-width="1.7"/>
+                                <path d="M8 10V7a4 4 0 0 1 8 0v3"
+                                    stroke="currentColor" stroke-width="1.7"
+                                    stroke-linecap="round"/>
+                            </svg>
+                        </span>
 
-            <p
-                id="errorMessage"
-                role="status"
-                aria-live="polite"
-            ></p>
+                        <input
+                            type="url"
+                            id="urlInput"
+                            name="url"
+                            placeholder="https://example.com"
+                            autocomplete="url"
+                            aria-describedby="urlHint errorMessage"
+                            required
+                        >
+
+                        <button type="submit" id="scanButton">
+                            <span>Scan website</span>
+                            <svg viewBox="0 0 24 24" fill="none"
+                                aria-hidden="true">
+                                <path d="M5 12h14m-6-6 6 6-6 6"
+                                    stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <p id="urlHint" class="url-hint">
+                        <span aria-hidden="true">ⓘ</span>
+                        Use a public website with an HTTP or HTTPS URL.
+                    </p>
+
+                    <p id="errorMessage" role="status" aria-live="polite"></p>
+                </form>
+
+                <div class="scanner-assurance">
+                    <span><span class="assurance-dot"></span> Header-based checks</span>
+                    <span><span class="assurance-dot"></span> Instant dashboard results</span>
+                    <span><span class="assurance-dot"></span> No account required</span>
+                </div>
+            </div>
+
+            <div class="hero-features">
+                <div class="hero-feature">
+                    <span class="feature-number">01</span>
+                    <span>Security analysis</span>
+                </div>
+                <div class="hero-feature">
+                    <span class="feature-number">02</span>
+                    <span>Privacy checks</span>
+                </div>
+                <div class="hero-feature">
+                    <span class="feature-number">03</span>
+                    <span>Response time</span>
+                </div>
+            </div>
         </section>
 
-        <!-- Scan Results -->
+        <!-- Results dashboard -->
         <section
             class="results-section"
+            id="results"
             aria-labelledby="resultsHeading"
         >
-            <h2 id="resultsHeading">Scan Results</h2>
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">YOUR ANALYTICS</span>
+                    <h2 id="resultsHeading">Scan overview</h2>
+                    <p>Your website assessment, all in one dashboard.</p>
+                </div>
+                <span class="section-label">
+                    <span class="section-label-dot"></span>
+                    Live results
+                </span>
+            </div>
 
             <div class="score-container">
 
-                <!-- Security Score -->
+                <!-- Security score -->
                 <article class="score-card security-score-card">
-                    <h3>Security</h3>
+                    <div class="score-card-top">
+                        <span class="score-icon security-icon"
+                            aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M12 3 20 6v5c0 5-3.4 8.2-8 10-4.6-1.8-8-5-8-10V6l8-3Z"
+                                    stroke="currentColor" stroke-width="1.7"
+                                    stroke-linejoin="round"/>
+                                <path d="m8.5 12 2.3 2.3 4.8-5"
+                                    stroke="currentColor" stroke-width="1.7"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                        <span class="score-category">PROTECTION</span>
+                    </div>
 
-                    <p>
+                    <h3>Security score</h3>
+
+                    <p class="score-value">
                         <strong id="securityScore">--</strong>
                         <span>/ 100</span>
                     </p>
@@ -92,88 +211,198 @@
                     </p>
                 </article>
 
-                <!-- Privacy Score -->
+                <!-- Privacy score -->
                 <article class="score-card privacy-score-card">
-                    <h3>Privacy</h3>
+                    <div class="score-card-top">
+                        <span class="score-icon privacy-icon"
+                            aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <rect x="4" y="10" width="16" height="11"
+                                    rx="2" stroke="currentColor"
+                                    stroke-width="1.7"/>
+                                <path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"
+                                    stroke="currentColor" stroke-width="1.7"
+                                    stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <span class="score-category">DATA PRIVACY</span>
+                    </div>
 
-                    <p>
+                    <h3>Privacy score</h3>
+
+                    <p class="score-value">
                         <strong id="privacyScore">--</strong>
                         <span>/ 100</span>
                     </p>
+
+                    <div
+                        class="mini-progress-track"
+                        role="progressbar"
+                        aria-label="Privacy score"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow="0"
+                        id="privacyProgressTrack"
+                    >
+                        <div
+                            class="mini-progress-fill privacy-fill"
+                            id="privacyProgressFill"
+                        ></div>
+                    </div>
 
                     <p id="privacyGrade" class="score-grade">
                         Awaiting scan
                     </p>
                 </article>
 
-                <!-- Performance Score -->
+                <!-- Performance score -->
                 <article class="score-card performance-score-card">
-                    <h3>Performance</h3>
+                    <div class="score-card-top">
+                        <span class="score-icon performance-icon"
+                            aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M4 17a8 8 0 1 1 16 0"
+                                    stroke="currentColor" stroke-width="1.7"
+                                    stroke-linecap="round"/>
+                                <path d="m12 13 4-4m-9 8h10"
+                                    stroke="currentColor" stroke-width="1.7"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                        <span class="score-category">SPEED CHECK</span>
+                    </div>
 
-                    <p>
+                    <h3>Performance score</h3>
+
+                    <p class="score-value">
                         <strong id="performanceScore">--</strong>
                         <span>/ 100</span>
                     </p>
+
+                    <div
+                        class="mini-progress-track"
+                        role="progressbar"
+                        aria-label="Performance score"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow="0"
+                        id="performanceProgressTrack"
+                    >
+                        <div
+                            class="mini-progress-fill performance-fill"
+                            id="performanceProgressFill"
+                        ></div>
+                    </div>
 
                     <p id="performanceGrade" class="score-grade">
                         Awaiting scan
                     </p>
 
-                    <p id="responseTime" class="score-grade">
+                    <p id="responseTime" class="response-time">
                         Response time: --
                     </p>
                 </article>
-
             </div>
 
-            <!-- Security Checks -->
-            <section
-                class="checks-card"
-                aria-labelledby="checksHeading"
-            >
-                <h3 id="checksHeading">Security Checks</h3>
+            <!-- Security checks and recommendations -->
+            <div class="analysis-grid">
+                <section class="detail-card checks-card"
+                    aria-labelledby="checksHeading">
+                    <div class="detail-card-heading">
+                        <span class="detail-icon" aria-hidden="true">✓</span>
+                        <div>
+                            <h3 id="checksHeading">Security checks</h3>
+                            <p>Review the detected security headers.</p>
+                        </div>
+                    </div>
 
-                <ul id="securityChecks" aria-live="polite">
-                    <li>Run a scan to see security checks.</li>
-                </ul>
-            </section>
+                    <ul id="securityChecks" aria-live="polite">
+                        <li>Run a scan to see security checks.</li>
+                    </ul>
+                </section>
 
-            <!-- Recommendations -->
-            <section
-                class="recommendations-card"
-                aria-labelledby="recommendationsHeading"
-            >
-                <h3 id="recommendationsHeading">Recommendations</h3>
+                <section class="detail-card recommendations-card"
+                    aria-labelledby="recommendationsHeading">
+                    <div class="detail-card-heading">
+                        <span class="detail-icon recommendation-icon"
+                            aria-hidden="true">✦</span>
+                        <div>
+                            <h3 id="recommendationsHeading">Recommendations</h3>
+                            <p>Discover opportunities to improve protection.</p>
+                        </div>
+                    </div>
 
-                <ul id="recommendations" aria-live="polite">
-                    <li>No scan performed yet.</li>
-                </ul>
-            </section>
+                    <ul id="recommendations" aria-live="polite">
+                        <li>No scan performed yet.</li>
+                    </ul>
+                </section>
+            </div>
 
+            <!-- NEW: Privacy and cookie details -->
+            <div class="analysis-grid privacy-analysis-grid">
+                <section class="detail-card"
+                    aria-labelledby="privacyChecksHeading">
+                    <div class="detail-card-heading">
+                        <span class="detail-icon" aria-hidden="true">🔒</span>
+                        <div>
+                            <h3 id="privacyChecksHeading">Privacy checks</h3>
+                            <p>Review privacy-related security settings.</p>
+                        </div>
+                    </div>
+
+                    <ul id="privacyChecks" aria-live="polite">
+                        <li>Run a scan to see privacy checks.</li>
+                    </ul>
+                </section>
+
+                <section class="detail-card"
+                    aria-labelledby="cookieChecksHeading">
+                    <div class="detail-card-heading">
+                        <span class="detail-icon" aria-hidden="true">🍪</span>
+                        <div>
+                            <h3 id="cookieChecksHeading">Cookie security</h3>
+                            <p>Review cookie findings returned by the scanner.</p>
+                        </div>
+                    </div>
+
+                    <ul id="cookieChecks" aria-live="polite">
+                        <li>Run a scan to see cookie findings.</li>
+                    </ul>
+                </section>
+            </div>
+
+            <p class="disclaimer">
+                <span aria-hidden="true">ⓘ</span>
+                SafeBrowse provides a basic header-based assessment, not a
+                complete security audit. Its performance score estimates
+                HTTP response speed, not full browser rendering performance.
+                Cookie findings only reflect information returned by the server.
+            </p>
         </section>
 
-        <!-- Recent Scan History -->
-        <section
-            class="history-section"
-            aria-labelledby="historyHeading"
-        >
+        <!-- Scan history -->
+        <section class="history-section" aria-labelledby="historyHeading">
             <div class="history-header">
-                <div>
-                    <h2 id="historyHeading">Recent Scans</h2>
-                    <p class="description">
-                        Review websites scanned during previous visits.
-                    </p>
+                <div class="section-heading history-title">
+                    <div>
+                        <span class="eyebrow">YOUR ACTIVITY</span>
+                        <h2 id="historyHeading">Recent scans</h2>
+                        <p>Revisit saved results or export your scan history.</p>
+                    </div>
                 </div>
 
                 <div class="history-actions">
-    <button type="button" id="exportHistoryButton" class="export-history-button">
-        Export History
-    </button>
+                    <button type="button" id="exportHistoryButton"
+                        class="export-history-button">
+                        <span aria-hidden="true">↓</span> Export CSV
+                    </button>
 
-    <button type="button" id="clearHistoryButton" class="clear-history-button">
-        Clear History
-    </button>
-</div>
+                    <button type="button" id="clearHistoryButton"
+                        class="clear-history-button">
+                        Clear history
+                    </button>
+                </div>
             </div>
 
             <p id="historyMessage" role="status" aria-live="polite">
@@ -188,7 +417,7 @@
                             <th scope="col">Security</th>
                             <th scope="col">Privacy</th>
                             <th scope="col">Performance</th>
-                            <th scope="col">Scan Time</th>
+                            <th scope="col">Scan time</th>
                         </tr>
                     </thead>
 
@@ -200,18 +429,27 @@
                 </table>
             </div>
         </section>
-
     </main>
 
-    <footer>
-        <p>SafeBrowse © 2026</p>
-        <p>
-            Basic security and privacy assessment —
-            not a complete security audit.
-        </p>
+    <footer class="footer">
+        <a class="brand footer-brand" href="#" aria-label="SafeBrowse home">
+            <span class="brand-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 3 20 6v5c0 5-3.4 8.2-8 10-4.6-1.8-8-5-8-10V6l8-3Z"
+                        stroke="currentColor" stroke-width="1.8"
+                        stroke-linejoin="round"/>
+                    <path d="m8.5 12 2.3 2.3 4.8-5"
+                        stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span>Safe<span class="brand-highlight">Browse</span></span>
+        </a>
+
+        <p>Built to make website security easier to understand.</p>
+        <p class="footer-copy">© 2026 SafeBrowse · Educational project</p>
     </footer>
 
     <script src="./script.js"></script>
-
 </body>
 </html>
